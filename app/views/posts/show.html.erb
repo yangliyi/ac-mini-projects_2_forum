@@ -1,0 +1,9 @@
+  <h2>
+    Topic: <%= @post.topic%>
+  </h2>
+  <p>
+    Content: <%= @post.content%>
+  </p>
+
+  <%= link_to 'Back to Home', posts_path %>
+  <%= link_to 'Edit', edit_post_path(@post) %>
