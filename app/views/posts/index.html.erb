@@ -6,6 +6,8 @@
   <tr>
     <th>Topic</th>
     <th>Content</th>
+    <th>Comment Count</th>
+    <th>Category</th>
     <th id="function" colspan="3">Function</th>
   </tr>
 
@@ -13,6 +15,12 @@
     <tr>
       <td><%= post.topic %></td>
       <td><%= post.content %></td>
+      <td><%= post.comments.count %></td>
+      <td>
+        <% post.categories.each do |c|%>
+          <%= c.name %> /
+        <% end %>
+      </td>
       <td><%= link_to "Show", post_path(post), class: "btn btn-primary" %></td>
       <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-default" %></td>
       <td><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>

@@ -1,5 +1,14 @@
-  <h2>Topic: <%= @post.topic%></h2>
-  <p>Content: <%= @post.content%></p>
+  <table class="table">
+    <tr><td><h2>Topic: <%= @post.topic%></h2></td></tr>
+    <tr><td><p>Content: <%= @post.content%></p></td></tr>
+    <tr><td><p>Category:
+    <% @post.categories.each do |c|%>
+    <%= c.name %> /
+    <% end %>
+    </p></td></tr>
+  </table>
+
+
   <%= link_to 'Edit', edit_post_path(@post), class: "btn btn-warning" %>
 
 
