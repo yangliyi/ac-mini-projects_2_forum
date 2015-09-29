@@ -1,9 +1,16 @@
-  <h2>
-    Topic: <%= @post.topic%>
-  </h2>
-  <p>
-    Content: <%= @post.content%>
-  </p>
+  <h2>Topic: <%= @post.topic%></h2>
+  <p>Content: <%= @post.content%></p>
+  <%= link_to 'Edit', edit_post_path(@post), class: "btn btn-warning" %>
 
+
+  <h3>Add a comment:</h3>
+
+  <%= render 'comments/form'%>
+
+  <h3>Comments</h3>
+
+  <%= render 'comments/comment' %>
+
+
+  <br>
   <%= link_to 'Back to Home', posts_path %>
-  <%= link_to 'Edit', edit_post_path(@post) %>

@@ -1,0 +1,14 @@
+<% @post.comments.each do |comment|%>
+  <table class="table">
+    <tr>
+      <td>Commenter:</td>
+      <td><%= comment.commenter %></td>
+    </tr>
+    <tr>
+      <td>Comment:</td>
+      <td><%= comment.comment %></td>
+    </tr>
+  </table>
+
+  <%= link_to 'Delete Comment', [comment.post, comment], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+  <% end %>
