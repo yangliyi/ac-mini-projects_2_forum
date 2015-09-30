@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-    @posts = Post.all
+    @posts = Post.order("created_at desc").page(params[:page]).per(5)
   end
 
   def new
@@ -45,6 +45,12 @@ class PostsController < ApplicationController
     @post.destroy
 
     redirect_to posts_path
+  end
+
+  def about
+    @posts = Post.all
+    @comments = Comment.all
+    @users = User.all
   end
 
   private

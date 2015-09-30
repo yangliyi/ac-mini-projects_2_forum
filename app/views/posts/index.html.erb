@@ -1,29 +1,38 @@
- <h1>All posts</h1>
 
-<%= link_to 'New post', new_post_path, class: "btn btn-primary" %><br>
+
+<div id="logo">
+  <h1>First Forum</h1>
+</div>
+<div id="about">
+  <h2><%= link_to 'About me', about_posts_path %></h2><br>
+</div>
+
 
  <table class="table">
   <tr>
     <th>Topic</th>
-    <th>Content</th>
-    <th>Comment Count</th>
+    <th>Replies</th>
     <th>Category</th>
-    <th id="function" colspan="3">Function</th>
+    <th id="function" colspan="2"></th>
   </tr>
 
   <% @posts.each do |post| %>
     <tr>
-      <td><%= post.topic %></td>
-      <td><%= post.content %></td>
+      <td><%= link_to post.topic, post_path(post)  %></td>
       <td><%= post.comments.count %></td>
       <td>
         <% post.categories.each do |c|%>
           <%= c.name %> /
         <% end %>
       </td>
-      <td><%= link_to "Show", post_path(post), class: "btn btn-primary" %></td>
       <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-default" %></td>
       <td><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
     </tr>
   <% end %>
 </table>
+
+<div>
+  <%= paginate @posts %>
+</div>
+
+<%= link_to 'New post', new_post_path, class: "btn btn-primary" %><br>
