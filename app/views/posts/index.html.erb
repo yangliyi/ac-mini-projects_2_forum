@@ -4,9 +4,18 @@
   <h1>First Forum</h1>
 </div>
 <div class="row">
-  <div id="new-post"class="col-md-6">
-    <%= link_to 'New post', new_post_path, class: "btn btn-primary" %>
+  <div class="col-md-12">
+    <%= link_to 'New post', new_post_path, class: "btn btn-info" %>
   </div>
+</div>
+<div class="row">
+  <div id="new-post"class="col-md-6">
+    <%= link_to 'Sort by Default', posts_path, class: "btn btn-primary" %>
+    <% Category.all.each do |category| %>
+    <%= link_to category.name, posts_path(category_id: category), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
   <div class="col-md-6">
     <div id="about">
       <h2><%= link_to 'About me', about_posts_path %></h2>
@@ -19,10 +28,10 @@
  <table class="table">
   <tr>
     <th>Topic</th>
-    <th><%= link_to 'Last updated time', posts_path(order: "topic") %></th>
+    <th><%= link_to 'Last updated time', posts_path(order: "topic", category_id: params[:category_id]) %> </th>
     <th>Category</th>
-    <th><%=link_to 'Replies', posts_path(order: "replies") %></th>
-    <th><%= link_to 'Last reply', posts_path(order: "comments")%></th>
+    <th><%=link_to 'Replies', posts_path(order: "replies", category_id: params[:category_id]) %></th>
+    <th><%= link_to 'Last reply', posts_path(order: "comments", category_id: params[:category_id])%></th>
     <th id="function"></th>
   </tr>
 
@@ -39,10 +48,10 @@
       <td><% if post.comments.any? %>
         <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M')%>
         <% else %>
-        No comments yet.
+        <%= link_to 'Be the first one to comment!', post_path(post) %>
         <% end %>
       </td>
-      <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-default" %><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
+      <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-success" %><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
     </tr>
   <% end %>
 </table>
