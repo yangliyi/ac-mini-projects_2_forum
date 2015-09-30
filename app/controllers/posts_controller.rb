@@ -3,7 +3,13 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-    @posts = Post.order("created_at desc").page(params[:page]).per(5)
+    if params[:order] == "topic"
+      @posts = Post.order('updated_at desc').page(params[:page]).per(5)
+    elsif params[:order] == "replies"
+      @posts = Post.order("comments_count desc").page(params[:page]).per(5)
+    else
+      @posts = Post.order('last_comment desc').page(params[:page]).per(5)
+    end
   end
 
   def new

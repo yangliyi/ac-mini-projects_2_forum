@@ -3,30 +3,46 @@
 <div id="logo">
   <h1>First Forum</h1>
 </div>
-<div id="about">
-  <h2><%= link_to 'About me', about_posts_path %></h2><br>
+<div class="row">
+  <div id="new-post"class="col-md-6">
+    <%= link_to 'New post', new_post_path, class: "btn btn-primary" %>
+  </div>
+  <div class="col-md-6">
+    <div id="about">
+      <h2><%= link_to 'About me', about_posts_path %></h2>
+    </div>
+  </div>
 </div>
+
 
 
  <table class="table">
   <tr>
     <th>Topic</th>
-    <th>Replies</th>
+    <th><%= link_to 'Last updated time', posts_path(order: "topic") %></th>
     <th>Category</th>
-    <th id="function" colspan="2"></th>
+    <th><%=link_to 'Replies', posts_path(order: "replies") %></th>
+    <th><%= link_to 'Last reply', posts_path(order: "comments")%></th>
+    <th id="function"></th>
   </tr>
 
   <% @posts.each do |post| %>
     <tr>
       <td><%= link_to post.topic, post_path(post)  %></td>
-      <td><%= post.comments.count %></td>
+      <td><%= post.updated_at.strftime('%b %d %Y %H:%M')%> </td>
       <td>
         <% post.categories.each do |c|%>
           <%= c.name %> /
         <% end %>
       </td>
-      <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-default" %></td>
-      <td><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
+      <td><%= post.comments.size %></td>
+      <td><% if post.comments.any? %>
+        <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M')%>
+        <% else %>
+        No comments yet.
+        <% end %>
+      </td>
+      <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-default" %><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
     </tr>
   <% end %>
 </table>
@@ -34,5 +50,3 @@
 <div>
   <%= paginate @posts %>
 </div>
-
-<%= link_to 'New post', new_post_path, class: "btn btn-primary" %><br>

@@ -2,6 +2,8 @@ class CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create(comment_params)
+    @post.last_comment = Time.now
+    @post.save
     redirect_to post_path(@post)
   end
 

@@ -1,5 +1,43 @@
 .table {
-  #function {
+  border: 1px solid #ccc;
+  th {
     text-align: center;
+    a {
+      text-decoration: none;
+      &:hover {
+      text-decoration: none;
+      }
+    }
   }
+  td {
+    text-align: center;
+    a {
+    text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.login {
+  width: 150px;
+  float: right;
+}
+
+#logo {
+  width: 200px;
+  margin: 0 auto;
+}
+#about{
+  display: inline;
+  text-align: right;
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+#new-post {
+  padding: 10px;
 }

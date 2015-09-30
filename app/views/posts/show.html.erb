@@ -1,11 +1,12 @@
   <table class="table">
     <tr><td><h2>Topic: <%= @post.topic%></h2></td></tr>
-    <tr><td><p>Content: <%= @post.content%></p></td></tr>
-    <tr><td><p>Category:
+    <tr><td><h4>Category:
     <% @post.categories.each do |c|%>
     <%= c.name %> /
     <% end %>
-    </p></td></tr>
+    </h4></td></tr>
+    <tr><td><p>Content: <%= @post.content%></p></td></tr>
+
   </table>
 
 
