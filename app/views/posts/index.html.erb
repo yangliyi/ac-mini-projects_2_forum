@@ -50,7 +50,8 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= link_to post.topic, post_path(post)  %></td>
-          <td><%= post.user.try(:username) %></td>
+          <td>
+          <%= image_tag post.user.gravatar_url %> <%= post.user.try(:username) %></td>
           <td><%= post.updated_at.strftime('%b %d %Y %H:%M')%> </td>
           <td>
               <% post.categories.each do |cat|%>
