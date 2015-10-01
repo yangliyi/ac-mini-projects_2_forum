@@ -1,5 +1,9 @@
 .table {
-  border: 1px solid #ccc;
+  span {
+    .label {
+    margin: 0 10px;
+    }
+  }
   th {
     text-align: center;
     a {
@@ -18,10 +22,18 @@
       }
     }
   }
+  ul {
+    list-style-type: none;
+    li {
+      float: left;
+      display: inline;
+      padding: 2px;
+    }
+  }
 }
 
 .login {
-  width: 150px;
+  width: 200px;
   float: right;
 }
 
@@ -29,15 +41,18 @@
   width: 200px;
   margin: 0 auto;
 }
-#about{
-  display: inline;
-  text-align: right;
+.about{
+  ul {
+    list-style-type: none;
+    li {
+      display: inline;
+      float: right;
+      padding: 2px;
+    }
+  }
   a {
     &:hover {
       text-decoration: none;
     }
   }
-}
-#new-post {
-  padding: 10px;
 }

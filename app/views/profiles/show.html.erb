@@ -1,0 +1,30 @@
+
+<table class="table">
+  <tr>
+    <td>使用者名稱：<%= @profile.user.username %></td>
+  </tr>
+  <tr>
+    <td>簡短介紹：<%= @profile.try(:bio) %></td>
+  </tr>
+</table>
+<%= @profile.user.username %>發佈過的文章：
+<table class="table">
+  <% @profile.user.posts.each do |p| %>
+    <tr>
+      <td><%= p.topic %></td>
+    </tr>
+  <% end %>
+</table>
+<%= @profile.user.username %> 回覆的留言：
+<table class="table">
+  <% @profile.user.comments.each do |p| %>
+    <tr>
+      <td><%= p.comment %></td>
+    </tr>
+  <% end %>
+</table>
+
+
+  <%= link_to '編輯個人資料', edit_profile_path(@profile) %>
+
+  <%= link_to '返回首頁', posts_path %>

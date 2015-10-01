@@ -1,19 +1,18 @@
-<% @post.comments.each do |comment|%>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <table class="table">
+      <% @post.comments.each do |comment|%>
       <tr>
-        <td>Commenter:</td>
-        <td><%= comment.commenter %></td>
-      </tr>
-      <tr>
-        <td>Comment:</td>
+        <td><%= comment.user.username %>：</td>
         <td><%= comment.comment %></td>
+        <td>
+          <%= link_to '刪除留言', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+        </td>
       </tr>
+      <% end %>
     </table>
   </div>
 </div>
 
 
-  <%= link_to 'Delete Comment', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-  <% end %>
+

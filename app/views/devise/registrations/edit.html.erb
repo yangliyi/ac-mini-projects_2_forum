@@ -1,4 +1,4 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2>修改個人帳號</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -10,34 +10,41 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :username, "使用者名稱：" %><br />
+      <%= f.text_field :username, class: "form-control" %>
+    </div>
+  </div>
+
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
 
   <div class="form-group">
     <div class="field">
-      <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+      <%= f.label :password, "密碼" %><i>如果不想修改密碼請保持空白</i><br />
       <%= f.password_field :password, autocomplete: "off", class: "form-control"  %>
     </div>
 
     <div class="field">
-      <%= f.label :password_confirmation %><br />
+      <%= f.label :password_confirmation, "請再確認一次密碼" %><i>如果不想修改密碼請保持空白</i><br />
       <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control"  %>
     </div>
 
     <div class="field">
-      <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+      <%= f.label :current_password, "目前密碼" %> <i>(需要輸入密碼才能變更個人資料)</i><br />
       <%= f.password_field :current_password, autocomplete: "off", class: "form-control"  %>
     </div>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update", class: "btn btn-default" %>
+    <%= f.submit "更新", class: "btn btn-default" %>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<h3>刪除帳號</h3>
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-default" %></p>
+<p>不想使用我們的服務了? <%= button_to "刪除我的帳號", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-default" %></p>
 
-<%= link_to "Back", :back %>
+<%= link_to "返回", :back %>

@@ -4,7 +4,6 @@ class PostsController < ApplicationController
 
   def index
 
-
     @posts = Post.all
 
     if params[:category_id]
@@ -12,20 +11,20 @@ class PostsController < ApplicationController
       @category = Category.find(params[:category_id])
       @posts = @category.posts
 
-      if params[:order] == "topic"
-        @posts = @posts.order('updated_at desc').page(params[:page]).per(5)
+      if params[:order] == "updated_at"
+        @posts = @posts.order('updated_at desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"
-        @posts = @posts.order("comments_count desc").page(params[:page]).per(5)
+        @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
       else
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(5)
+        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       end
     else
-      if params[:order] == "topic"
-        @posts = @posts.order('updated_at desc').page(params[:page]).per(5)
+      if params[:order] == "updated_at"
+        @posts = @posts.order('updated_at desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"
-        @posts = @posts.order("comments_count desc").page(params[:page]).per(5)
+        @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
       else
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(5)
+        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       end
     end
   end
@@ -40,6 +39,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
+    @post.user = current_user
 
     if @post.save
       redirect_to post_path(@post)

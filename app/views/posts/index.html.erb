@@ -1,61 +1,95 @@
-
-
 <div id="logo">
-  <h1>First Forum</h1>
+  <h1></h1>
 </div>
 <div class="row">
   <div class="col-md-12">
-    <%= link_to 'New post', new_post_path, class: "btn btn-info" %>
+    偏好排序：
+    <%= link_to '最後更新時間', posts_path(order: "updated_at", category_id: params[:category_id]), class: "btn btn-primary" %>
+    <%=link_to '回覆數', posts_path(order: "replies", category_id: params[:category_id]), class: "btn btn-primary" %>
+    <%= link_to '最後回覆時間', posts_path(order: "last_comment", category_id: params[:category_id]), class: "btn btn-primary" %>
   </div>
 </div>
 <div class="row">
-  <div id="new-post"class="col-md-6">
-    <%= link_to 'Sort by Default', posts_path, class: "btn btn-primary" %>
-    <% Category.all.each do |category| %>
-    <%= link_to category.name, posts_path(category_id: category), class: "btn btn-primary" %>
-    <% end %>
+  <div class="col-md-9">
+    <div class="row">
+      <div id="new-post"class="col-md-12">
+        類別搜尋：
+        <%= link_to '全部', posts_path, class: "btn btn-primary"  %>
+        <% Category.all.each do |category| %>
+        <%= link_to category.name, posts_path(category_id: category), class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
+  <div class="col-md-3 about">
+    <ul>
+      <li id="forum">
+        <%= link_to '關於我', about_posts_path, class: "btn btn-info" %>
+      </li>
+      <li id="new-post">
+        <%= link_to '新文章', new_post_path, class: "btn btn-info" %>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-hover table-striped">
+      <tr>
+        <th>標題</th>
+        <th>作者</th>
+        <th>最後更新時間</th>
+        <th>分類</th>
+        <th>回覆數</th>
+        <th>最後回覆時間</th>
+        <th>最後回覆</th>
+        <th id="function"></th>
+      </tr>
 
-  <div class="col-md-6">
-    <div id="about">
-      <h2><%= link_to 'About me', about_posts_path %></h2>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= link_to post.topic, post_path(post)  %></td>
+          <td><%= post.user.try(:username) %></td>
+          <td><%= post.updated_at.strftime('%b %d %Y %H:%M')%> </td>
+          <td>
+              <% post.categories.each do |c|%>
+                <span class=" label label-info"><%= c.name %></span>
+              <% end %>
+          </td>
+          <td><%= post.comments.size %></td>
+          <td><% if post.comments.any? %>
+            <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M')%>
+            <% else %>
+            <%= '尚無留言' %>
+            <% end %>
+          </td>
+          <td><% if post.comments.any? %>
+            <%=  post.comments.last.user.try(:username) %>
+            <% else %>
+            <%= link_to '成為第一個留言的使用者!', post_path(post) %>
+            <% end %>
+          </td>
+          <td>
+            <% if post.user == current_user %>
+              <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %><%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+    <div>
+      <%= paginate @posts %>
     </div>
   </div>
 </div>
 
 
 
- <table class="table">
-  <tr>
-    <th>Topic</th>
-    <th><%= link_to 'Last updated time', posts_path(order: "topic", category_id: params[:category_id]) %> </th>
-    <th>Category</th>
-    <th><%=link_to 'Replies', posts_path(order: "replies", category_id: params[:category_id]) %></th>
-    <th><%= link_to 'Last reply', posts_path(order: "comments", category_id: params[:category_id])%></th>
-    <th id="function"></th>
-  </tr>
 
-  <% @posts.each do |post| %>
-    <tr>
-      <td><%= link_to post.topic, post_path(post)  %></td>
-      <td><%= post.updated_at.strftime('%b %d %Y %H:%M')%> </td>
-      <td>
-        <% post.categories.each do |c|%>
-          <%= c.name %> /
-        <% end %>
-      </td>
-      <td><%= post.comments.size %></td>
-      <td><% if post.comments.any? %>
-        <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M')%>
-        <% else %>
-        <%= link_to 'Be the first one to comment!', post_path(post) %>
-        <% end %>
-      </td>
-      <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-success" %><%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
-    </tr>
-  <% end %>
-</table>
 
-<div>
-  <%= paginate @posts %>
-</div>
+
+
+
+
+

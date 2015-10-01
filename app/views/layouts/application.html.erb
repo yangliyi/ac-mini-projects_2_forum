@@ -24,13 +24,19 @@
         <% end %>
         <div class="login">
           <% if current_user %>
-          <%= link_to('Log Out', destroy_user_session_path, :method => :delete) %> |
-          <%= link_to('Edit Profile', edit_registration_path(:user) ) %>
+          <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
+          <%= link_to('帳號設定', edit_registration_path(:user) ) %>
+            <% if current_user.profile == nil %>
+            | <%= link_to '新增個人資料', new_profile_path %>
+            <% else %>
+            | <%= link_to '個人資料', profile_path(current_user.profile)%>
+            <% end %>
           <% else %>
-          <%= link_to('Sign Up', new_registration_path(:user)) %> |
-          <%= link_to('Log In', new_session_path(:user)) %>
+          <%= link_to('註冊', new_registration_path(:user)) %> |
+          <%= link_to('登入', new_session_path(:user)) %>
           <% end %>
         </div>
+        <div class="clearfix"></div>
 
 
         <%= yield %>

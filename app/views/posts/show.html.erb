@@ -1,26 +1,26 @@
   <table class="table">
-    <tr><td><h2>Topic: <%= @post.topic%></h2></td></tr>
-    <tr><td><h4>Category:
+    <tr><td><h2>標題<%= @post.topic%></h2></td></tr>
+    <tr><td><h4>分類：
     <% @post.categories.each do |c|%>
-    <%= c.name %> /
+    <span class=" label label-info"><%= c.name %></span>
     <% end %>
     </h4></td></tr>
-    <tr><td><p>Content: <%= @post.content%></p></td></tr>
+    <tr><td><p>內文：<%= @post.content%></p></td></tr>
 
   </table>
 
 
-  <%= link_to 'Edit', edit_post_path(@post), class: "btn btn-warning" %>
+  <%= link_to '編輯', edit_post_path(@post), class: "btn btn-warning" %>
 
 
-  <h3>Add a comment:</h3>
+  <h3>我要回覆</h3>
 
   <%= render 'comments/form'%>
 
-  <h3>Comments</h3>
+  <h3>留言</h3>
 
   <%= render 'comments/comment' %>
 
 
   <br>
-  <%= link_to 'Back to Home', posts_path %>
+  <%= link_to '返回首頁', posts_path %>

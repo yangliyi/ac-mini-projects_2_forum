@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :profiles
+
   resources :posts do
     resources :comments
 
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
         get :about
     end
   end
+
 
 
 
