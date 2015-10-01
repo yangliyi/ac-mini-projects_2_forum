@@ -41,6 +41,7 @@
         <th>最後更新時間</th>
         <th>分類</th>
         <th>回覆數</th>
+        <th>參與討論者</th>
         <th>最後回覆時間</th>
         <th>最後回覆</th>
         <th id="function"></th>
@@ -52,11 +53,20 @@
           <td><%= post.user.try(:username) %></td>
           <td><%= post.updated_at.strftime('%b %d %Y %H:%M')%> </td>
           <td>
-              <% post.categories.each do |c|%>
-                <span class=" label label-info"><%= c.name %></span>
+              <% post.categories.each do |cat|%>
+                <span class=" label label-info"><%= cat.name %></span>
               <% end %>
           </td>
           <td><%= post.comments.size %></td>
+          <td>
+            <% a = [] %>
+            <% post.comments.each do |comment| %>
+              <% a << comment.user.username %>
+              <% end %>
+            <% a.uniq.each do |user| %>
+            <%= user %>
+            <% end %>
+          </td>
           <td><% if post.comments.any? %>
             <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M')%>
             <% else %>
@@ -71,7 +81,8 @@
           </td>
           <td>
             <% if post.user == current_user %>
-              <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %><%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
+              <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %>
+              <%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
             <% end %>
           </td>
         </tr>

@@ -3,11 +3,7 @@
 
 .table {
   border: 1px solid #ccc;
-  span {
-    .label {
-    margin: 0 10px;
-    }
-  }
+
   th {
     text-align: center;
     a {
@@ -24,6 +20,12 @@
       &:hover {
         text-decoration: none;
       }
+    }
+    span {
+      text-align: left;
+      font-size: 1.1em;
+      padding: 3px 5px;
+      margin: 0 2px;
     }
   }
   ul {

@@ -6,7 +6,9 @@
         <td><%= comment.user.username %>：</td>
         <td><%= comment.comment %></td>
         <td>
+          <% if comment.user == current_user %>
           <%= link_to '刪除留言', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          <% end %>
         </td>
       </tr>
       <% end %>
