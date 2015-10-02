@@ -8,18 +8,18 @@
   </tr>
 </table>
 <%= @profile.user.username %>發佈過的文章：
-<table class="table">
+<table class="table table-striped">
   <% @profile.user.posts.each do |p| %>
     <tr>
-      <td><%= p.topic %></td>
+      <td><%= link_to p.topic, post_path(p) %></td>
     </tr>
   <% end %>
 </table>
 <%= @profile.user.username %> 回覆的留言：
-<table class="table">
+<table class="table table-striped">
   <% @profile.user.comments.each do |p| %>
     <tr>
-      <td><%= p.comment %></td>
+      <td><%= link_to p.comment, post_path(p.post) %></td>
     </tr>
   <% end %>
 </table>

@@ -1,0 +1,50 @@
+<h2>修改個人帳號</h2>
+
+<%= form_for @user, :url => admin_user_path(@user) do |f| %>
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :username, "使用者名稱：" %><br />
+      <%= f.text_field :username, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :password, "密碼" %><i>如果不想修改密碼請保持空白</i><br />
+      <%= f.password_field :password, autocomplete: "off", class: "form-control"  %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation, "請再確認一次密碼" %><i>如果不想修改密碼請保持空白</i><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control"  %>
+    </div>
+
+    <div class="field">
+      <%= f.label :current_password, "目前密碼" %> <i>(需要輸入密碼才能變更個人資料)</i><br />
+      <%= f.password_field :current_password, autocomplete: "off", class: "form-control"  %>
+    </div>
+
+    <div class="form-group">
+      <div class="field">
+        <%= f.label :role, "使用者權限：" %><br />
+        <%= f.text_field :role, class: "form-control" %>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="actions">
+    <%= f.submit "更新", class: "btn btn-default" %>
+  </div>
+<% end %>
+
+<%= link_to "返回", :back %>

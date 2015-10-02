@@ -1,0 +1,25 @@
+使用者列表：
+<table class="table table-hover">
+  <tr>
+    <th>使用者</th>
+    <th>個人簡介</th>
+    <th>權限</th>
+    <th colspan="2"></th>
+  </tr>
+  <% @users.each do |u| %>
+  <tr>
+    <td>
+      <%= image_tag u.gravatar_url %><%= u.username %>
+    </td>
+    <td>
+      <%= u.profile.bio %>
+    </td>
+    <td>
+      <%= u.role %>
+    </td>
+    <td>
+      <%= link_to '編輯使用者資料', edit_admin_profile_path(u.profile), class: "btn btn-success" %>
+      <%= link_to '編輯權限', edit_admin_user_path(u), class: "btn btn-warning"  %>
+  </tr>
+  <% end %>
+</table>

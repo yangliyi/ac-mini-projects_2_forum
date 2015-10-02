@@ -4,10 +4,12 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create(comment_params)
     @comment.user = current_user
-    @comment.save
-    @post.last_comment = @comment.created_at
-    @post.save
+    @post.last_comment = Time.now
+    if @comment.save
+      @post.save
+      flash[:notice] = "回覆成功！"
     redirect_to post_path(@post)
+    end
   end
 
 

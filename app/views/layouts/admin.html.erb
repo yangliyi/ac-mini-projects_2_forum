@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>First Forum</title>
+  <title>論壇</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -11,6 +11,7 @@
     <div class="row">
       <div class="col-md-12">
 
+        <h1>後台管理頁面</h1>
         <% if flash[:notice].present? %>
           <div class="alert alert-success" role="alert">
             <%= flash[:notice] %>
@@ -23,12 +24,9 @@
           </div>
         <% end %>
 
-
         <%= yield %>
 
-        <% if current_user && current_user.admin? %>
-        <%= link_to '後台管理頁面', admin_users_path %>
-        <% end %>
+        <%= link_to '返回論壇', posts_path %>
 
       </div>
     </div>

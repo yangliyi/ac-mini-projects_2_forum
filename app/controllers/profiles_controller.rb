@@ -20,14 +20,12 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   private
 
   def set_profile
     @profile = Profile.find(params[:id])
   end
+
   def profile_params
     params.require(:profile).permit(:bio)
   end
