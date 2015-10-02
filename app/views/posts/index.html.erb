@@ -101,7 +101,7 @@
             <% end %>
           </td>
           <td>
-            <% if post.user == current_user %>
+            <% if current_user == post.user || current_user.admin? %>
               <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %>
               <%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
             <% end %>
