@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
     if @comment.save
       @post.save
       flash[:notice] = "回覆成功！"
-    redirect_to post_path(@post)
+      redirect_to post_path(@post)
     end
   end
 

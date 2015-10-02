@@ -11,20 +11,20 @@ class PostsController < ApplicationController
       @category = Category.find(params[:category_id])
       @posts = @category.posts
 
-      if params[:order] == "created_at"
-        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
+      if params[:order] == "last_comment"
+        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"
         @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
       else
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
+        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
       end
     else
-      if params[:order] == "created_at"
-        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
+      if params[:order] == "last_comment"
+        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"
         @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
       else
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
+        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
       end
     end
   end
