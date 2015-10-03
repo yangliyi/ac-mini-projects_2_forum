@@ -7,9 +7,21 @@
     <td>簡短介紹：<%= @profile.try(:bio) %></td>
   </tr>
 </table>
-<%= @profile.user.username %>發佈過的文章：
+
+<% if current_user == @profile.user || current_user.admin? %>
+<%= '尚未發布的草稿：' %>
+<table class="table">
+  <% @profile.user.posts.where(status: "draft").each do |p| %>
+    <tr>
+      <td><%= link_to p.topic, edit_post_path(p) %></td>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+<%= @profile.user.username %>發布過的文章：
 <table class="table table-striped">
-  <% @profile.user.posts.each do |p| %>
+  <% @profile.user.posts.where(status: "published").each do |p| %>
     <tr>
       <td><%= link_to p.topic, post_path(p) %></td>
     </tr>

@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_action :set_post, :only => [:edit, :update, :destroy]
 
   def index
-    @posts = Post.all
+    @posts = Post.all.where(status: "published")
 
     if params[:category_id]
 
@@ -42,7 +42,11 @@ class PostsController < ApplicationController
 
     if @post.save
       flash[:notice] = "文章新增成功！"
-      redirect_to post_path(@post)
+      if @post.status == "published"
+        redirect_to post_path(@post)
+      else
+        redirect_to profile_path(current_user.profile)
+      end
     else
       render 'new'
     end
@@ -52,7 +56,11 @@ class PostsController < ApplicationController
   def update
     if @post.update(post_params)
       flash[:notice] = "文章修改成功！"
-      redirect_to post_path(@post)
+      if @post.status == "published"
+        redirect_to post_path(@post)
+      else
+        redirect_to profile_path(current_user.profile)
+      end
     else
       render 'edit'
     end
@@ -60,7 +68,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.where(status: "published").find(params[:id])
   end
 
   def destroy
@@ -88,7 +96,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, category_ids: [])
   end
 
 end
