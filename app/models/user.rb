@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   has_many :posts
   has_many :comments
 
+  # Favorite posts of user
+  has_many :favorite_posts
+  has_many :favorites, through: :favorite_posts, source: :post
   def admin?
     self.role == "admin"
   end

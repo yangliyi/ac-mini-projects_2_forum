@@ -21,8 +21,15 @@
 
 
   <% if @post.user == current_user %>
-    <%= link_to '編輯', edit_post_path(@post), class: "btn btn-success" %>
+    <%= link_to '編輯', edit_post_path(@post), class: "btn btn-primary" %>
   <% end %>
+
+  <% if current_user %>
+  <%= link_to "收藏",   favorite_post_path(@post, type: "favorite"), method: :put, class: "btn btn-success" %>
+  <%= link_to "取消收藏", favorite_post_path(@post, type: "unfavorite"), method: :put, class: "btn btn-danger" %>
+  <% end %>
+
+
 
 
   <h3>我要回覆</h3>

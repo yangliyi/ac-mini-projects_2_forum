@@ -61,6 +61,9 @@
         <th>參與討論者</th>
         <th>最後回覆時間</th>
         <th>最後回覆</th>
+        <% if current_user.admin? %>
+        <th>文章狀態</th>
+        <% end %>
         <th id="function"></th>
       </tr>
 
@@ -100,13 +103,17 @@
             <%= link_to '成為第一個留言的使用者!', post_path(post) %>
             <% end %>
           </td>
+          <% if current_user.admin? %>
+          <td>
+            <%= post.status %>
+          </td>
+          <% end %>
           <td>
             <% if current_user %>
               <% if current_user == post.user || current_user.admin? %>
                 <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %>
                 <%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
               <% end %>
-            <% else %>
             <% end %>
           </td>
         </tr>

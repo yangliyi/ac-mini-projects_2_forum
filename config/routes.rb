@@ -6,9 +6,12 @@ Rails.application.routes.draw do
 
   resources :posts do
     resources :comments
+
     collection do
         get :about
     end
+
+    put :favorite, on: :member
   end
 
   namespace :admin do

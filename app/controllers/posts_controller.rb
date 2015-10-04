@@ -4,7 +4,11 @@ class PostsController < ApplicationController
   before_action :set_post, :only => [:edit, :update, :destroy]
 
   def index
-    @posts = Post.all.where(status: "published")
+    if current_user && current_user.admin?
+      @posts = Post.all
+    else
+      @posts = Post.all.where(status: "published")
+    end
 
     if params[:category_id]
 
@@ -68,7 +72,11 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.where(status: "published").find(params[:id])
+      if current_user.admin?
+        @post = Post.find(params[:id])
+      else
+        @post = Post.where(status: "published").find(params[:id])
+      end
   end
 
   def destroy
@@ -85,6 +93,25 @@ class PostsController < ApplicationController
     @users = User.all
   end
 
+  # Add and remove favorite posts
+  # for current_user
+  def favorite
+    @post = Post.find(params[:id])
+    type = params[:type]
+    if type == "favorite"
+      current_user.favorites << @post
+      redirect_to :back, notice: "收藏 #{@post.topic}"
+
+    elsif type == "unfavorite"
+      current_user.favorites.delete(@post)
+      redirect_to :back, notice: "取消收藏 #{@post.topic}"
+
+    else
+      # Type missing, nothing happens
+      redirect_to :back
+    end
+  end
+
   private
 
   def set_post
@@ -96,7 +123,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, :status, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, :post_id, category_ids: [])
   end
 
 end

@@ -8,6 +8,15 @@
   </tr>
 </table>
 
+收藏的文章：
+<table class="table table-striped">
+<% @profile.user.favorites.each do |f| %>
+  <tr>
+    <td><%= link_to f.topic, post_path(f)%></td>
+  </tr>
+  <% end %>
+</table>
+
 <% if current_user == @profile.user || current_user.admin? %>
 <%= '尚未發布的草稿：' %>
 <table class="table">
