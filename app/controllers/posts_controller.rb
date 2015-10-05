@@ -14,6 +14,7 @@ class PostsController < ApplicationController
 
       @category = Category.find(params[:category_id])
       @posts = @category.posts
+
       if params[:order] == "last_comment"
         @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"
@@ -57,6 +58,10 @@ class PostsController < ApplicationController
   end
 
   def update
+    if params[:destroy_photo] == "1"
+        @post.photo = nil
+    end
+
     if @post.update(post_params)
       flash[:notice] = "文章修改成功！"
       if @post.status == "published"
@@ -97,6 +102,7 @@ class PostsController < ApplicationController
   def favorite
     @post = Post.find(params[:id])
     type = params[:type]
+
     if type == "favorite"
       current_user.favorites << @post
       redirect_to :back, notice: "收藏 #{@post.topic}"
@@ -122,7 +128,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, :status, :post_id, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, category_ids: [])
   end
 
 end

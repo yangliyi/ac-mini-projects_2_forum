@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005062035) do
+ActiveRecord::Schema.define(version: 20151005120301) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -23,9 +23,13 @@ ActiveRecord::Schema.define(version: 20151005062035) do
     t.string   "commenter"
     t.text     "comment"
     t.integer  "post_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "user_id"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "comments", ["post_id"], name: "index_comments_on_post_id"
@@ -54,12 +58,16 @@ ActiveRecord::Schema.define(version: 20151005062035) do
   create_table "posts", force: :cascade do |t|
     t.string   "topic"
     t.text     "content"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "comments_count"
     t.datetime "last_comment"
     t.integer  "user_id"
     t.string   "status"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"

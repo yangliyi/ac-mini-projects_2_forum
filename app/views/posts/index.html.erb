@@ -73,7 +73,7 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= link_to post.topic, post_path(post)  %></td>
-          <td>
+          <td class="author">
             <%= link_to profile_path(post.user.profile) do %>
               <%= image_tag post.user.gravatar_url %>
               <%= post.user.try(:username) %>
@@ -86,7 +86,7 @@
               <% end %>
           </td>
           <td><%= post.comments.size %></td>
-          <td>
+          <td class="author">
             <% post.comments.map{ |c| c.user }.uniq.each do |user| %>
               <%= link_to profile_path(user.profile) do %>
               <%= image_tag user.gravatar_url %>

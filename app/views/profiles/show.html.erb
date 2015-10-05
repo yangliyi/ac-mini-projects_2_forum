@@ -13,9 +13,13 @@
 <% @profile.user.favorites.each do |f| %>
   <tr>
     <td><%= link_to f.topic, post_path(f)%></td>
+    <td>
+      <%= link_to "取消收藏", favorite_post_path(f, type: "unfavorite"), method: :put, class: "btn btn-danger" %>
+    </td>
   </tr>
   <% end %>
 </table>
+
 
 <% if current_user == @profile.user || current_user.admin? %>
 <%= '尚未發布的草稿：' %>
@@ -28,7 +32,9 @@
 </table>
 <% end %>
 
-<%= @profile.user.username %>發布過的文章：
+
+
+發布過的文章：
 <table class="table table-striped">
   <% @profile.user.posts.where(status: "published").each do |p| %>
     <tr>
@@ -36,7 +42,7 @@
     </tr>
   <% end %>
 </table>
-<%= @profile.user.username %> 回覆的留言：
+回覆的留言：
 <table class="table table-striped">
   <% @profile.user.comments.each do |p| %>
     <tr>

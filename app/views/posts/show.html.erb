@@ -11,7 +11,16 @@
       </td>
     </tr>
     <tr>
-      <td>作者：<%= image_tag @post.user.gravatar_url %><%= @post.user.username %></td>
+      <td>
+        <% if @post.photo.exists?%>
+        <%= image_tag(@post.photo.url(:medium)) %>
+        <% else %>
+        無上傳圖片
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="author">作者：<%= image_tag @post.user.gravatar_url %><%= @post.user.username %></td>
     </tr>
     <tr>
       <td><p>內文：<%= @post.content%></p></td>
