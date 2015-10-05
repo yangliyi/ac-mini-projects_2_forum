@@ -14,7 +14,6 @@ class PostsController < ApplicationController
 
       @category = Category.find(params[:category_id])
       @posts = @category.posts
-
       if params[:order] == "last_comment"
         @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
       elsif params[:order] == "replies"

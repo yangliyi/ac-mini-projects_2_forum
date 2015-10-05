@@ -10,7 +10,8 @@
     <% end %>
   <% else %>
   <%= link_to('註冊', new_registration_path(:user)) %> |
-  <%= link_to('登入', new_session_path(:user)) %>
+  <%= link_to('登入', new_session_path(:user)) %> |
+  <%= link_to "Facebook 登入", user_omniauth_authorize_path(:facebook) %>
   <% end %>
 </div>
 <div class="clearfix"></div>
@@ -61,8 +62,10 @@
         <th>參與討論者</th>
         <th>最後回覆時間</th>
         <th>最後回覆</th>
-        <% if current_user.admin? %>
-        <th>文章狀態</th>
+        <% if current_user %>
+          <% if current_user.admin? %>
+            <th>文章狀態</th>
+          <% end %>
         <% end %>
         <th id="function"></th>
       </tr>
@@ -103,10 +106,12 @@
             <%= link_to '成為第一個留言的使用者!', post_path(post) %>
             <% end %>
           </td>
-          <% if current_user.admin? %>
-          <td>
-            <%= post.status %>
-          </td>
+          <% if current_user %>
+            <% if current_user.admin? %>
+              <td>
+                <%= post.status %>
+              </td>
+            <% end %>
           <% end %>
           <td>
             <% if current_user %>
