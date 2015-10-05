@@ -22,7 +22,7 @@
 <div class="row">
   <div class="col-md-12">
     偏好排序：
-    <%= link_to '回覆數', posts_path(order: "replies", category_id: params[:category_id]), class: "btn btn-primary" %>
+    <%= link_to '回覆數', posts_path(order: "comments_count", category_id: params[:category_id]), class: "btn btn-primary" %>
     <%= link_to '文章發佈時間(預設)', posts_path(order: "created_at", category_id: params[:category_id]), class: "btn btn-primary" %>
     <%= link_to '最後回覆時間', posts_path(order: "last_comment", category_id: params[:category_id]), class: "btn btn-primary" %>
   </div>

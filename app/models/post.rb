@@ -7,6 +7,27 @@ class Post < ActiveRecord::Base
   has_many :favorite_posts
   has_many :favorited_by, through: :favorite_posts, source: :user
 
+  has_many :taggings
+  has_many :tags, through: :taggings
+
+  def tag_list
+     self.tags.map{ |t| t.name }.join(",")
+  end
+
+  def tag_list=(str)
+    arr = str.split(",")
+
+    self.tags = arr.map do |t|
+      tag = Tag.find_by_name(t)
+      unless tag
+        tag = Tag.create!( :name => t )
+      end
+      tag
+    end
+
+  end
+
+
   has_many :comments, dependent: :destroy
   has_many :post_categoryships
   has_many :categories, through: :post_categoryships

@@ -22,6 +22,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :tag_list, "Tag：(請用 , 分開)" %>
+    <%= f.text_field :tag_list %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :photo, "主題圖片" %>
     <%= f.file_field :photo %>
 

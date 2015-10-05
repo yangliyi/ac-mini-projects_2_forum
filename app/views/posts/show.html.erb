@@ -25,6 +25,14 @@
     <tr>
       <td><p>內文：<%= @post.content%></p></td>
     </tr>
+    <tr>
+      <td>
+        Tags:
+        <% @post.tags.each do |t| %>
+          <%= t.name %>
+        <% end %>
+      </td>
+    </tr>
 
   </table>
 

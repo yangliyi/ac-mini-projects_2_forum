@@ -2,35 +2,55 @@ class PostsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index]
   before_action :set_post, :only => [:edit, :update, :destroy]
-
   def index
-    if current_user && current_user.admin?
-      @posts = Post.all
-    else
-      @posts = Post.all.where(status: "published")
-    end
+    # if current_user.admin?
+    #   @posts = Post.all
+    # else
+    #   @posts = Post.all.where(status: "published")
+    # end
 
     if params[:category_id]
-
       @category = Category.find(params[:category_id])
-      @posts = @category.posts
-
-      if params[:order] == "last_comment"
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
-      elsif params[:order] == "replies"
-        @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
-      else
-        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
-      end
+      @posts = current_user.admin? ? @category.posts : @category.posts.where(status: "published")
     else
-      if params[:order] == "last_comment"
-        @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
-      elsif params[:order] == "replies"
-        @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
-      else
-        @posts = @posts.order('created_at desc').page(params[:page]).per(10)
-      end
+      @posts = current_user.admin? ? Post.all : Post.where(status: 'published')
     end
+
+    if params[:order]
+      @posts = @posts.order("#{params[:order]} desc").page(params[:page]).per(10)
+    else
+      @posts = @posts.order("id DESC").page(params[:page]).per(10)
+    end
+
+    # if params[:order] == "last_comment"
+    # elsif params[:order] == "comments_count"
+      # @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
+    # elsif params[:order] == "created_at"
+      # @posts = @posts.order('created_at desc').page(params[:page]).per(10)
+    # end
+
+    # if params[:category_id]
+
+    #   @category = Category.find(params[:category_id])
+    #   @posts = @category.posts
+
+
+      # if params[:order] == "last_comment"
+      #   @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
+      # elsif params[:order] == "replies"
+      #   @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
+      # else
+      #   @posts = @posts.order('created_at desc').page(params[:page]).per(10)
+      # end
+    # else
+      # if params[:order] == "last_comment"
+      #   @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
+      # elsif params[:order] == "replies"
+      #   @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
+      # else
+      #   @posts = @posts.order('created_at desc').page(params[:page]).per(10)
+      # end
+    # end
   end
 
   def new
@@ -128,7 +148,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, :tag_list, category_ids: [])
   end
 
 end
