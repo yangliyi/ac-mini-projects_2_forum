@@ -11,7 +11,7 @@ class Admin::ProfilesController < ApplicationController
   def update
     @profile = Profile.find(params[:id])
     if @profile.update(profile_params)
-      flash[:notice] = "文章修改成功！"
+      flash[:notice] = "個人資料修改成功！"
       redirect_to admin_users_path
     else
       render 'edit'
