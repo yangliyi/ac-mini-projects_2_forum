@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
+  get "/about" => "posts#about"
 
   resources :profiles
 
@@ -12,7 +13,9 @@ Rails.application.routes.draw do
         get :about
     end
 
-    put :favorite, on: :member
+    member do
+      post :favorite
+    end
   end
 
   namespace :admin do

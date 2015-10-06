@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
   has_many :favorite_posts
   has_many :favorites, through: :favorite_posts, source: :post
 
+  def favorite_post?(post)
+    self.favorites.include?(post)
+  end
 
   def self.fb_email(fb_token)
     require "open-uri"
