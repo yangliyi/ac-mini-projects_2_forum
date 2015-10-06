@@ -7,6 +7,7 @@ class Admin::UsersController < ApplicationController
 
   def index
     @users = User.all
+    @category = Category.new
   end
 
   def edit
@@ -31,9 +32,4 @@ class Admin::UsersController < ApplicationController
     params.require(:user).permit(:username, :role)
   end
 
-  def check_admin
-    unless current_user.admin?
-      raise ActiveRecord::RecordNotFound
-    end
-  end
 end

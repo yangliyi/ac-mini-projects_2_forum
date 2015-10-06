@@ -21,12 +21,6 @@ class Admin::ProfilesController < ApplicationController
 
   protected
 
-  def check_admin
-    unless current_user.admin?
-      raise ActiveRecord::RecordNotFound
-    end
-  end
-
   def profile_params
     params.require(:profile).permit(:bio)
   end

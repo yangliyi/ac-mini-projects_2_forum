@@ -13,13 +13,4 @@ class Admin::PostsController < ApplicationController
 
   end
 
-
-  protected
-
-  def check_admin
-    unless current_user.admin?
-      raise ActiveRecord::RecordNotFound
-    end
-  end
-
 end

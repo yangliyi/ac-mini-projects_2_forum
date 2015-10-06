@@ -55,9 +55,4 @@ class Admin::CategoriesController < ApplicationController
     params.require(:category).permit(:name)
   end
 
-  def check_admin
-    unless current_user.admin?
-      raise ActiveRecord::RecordNotFound
-    end
-  end
 end
