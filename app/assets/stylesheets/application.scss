@@ -8,8 +8,8 @@
 .table {
   border: 1px solid #ccc;
   .author img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 30px;
   }
   th {
@@ -51,6 +51,10 @@
   text-align: right;
 }
 
+.sort {
+  margin: 3px 0;
+}
+
 #logo {
   width: 200px;
   margin: 0 auto;
@@ -68,5 +72,12 @@
     &:hover {
       text-decoration: none;
     }
+  }
+}
+.comment-commenter {
+  img {
+    width: 25px;
+    height: 25px;
+    border-radius: 30px;
   }
 }

@@ -3,7 +3,12 @@
     <table class="table">
       <% @post.comments.each do |comment|%>
       <tr>
-        <td><%= image_tag comment.user.gravatar_url %><%= comment.user.username %>：</td>
+        <td class="comment-commenter">
+          <%= link_to profile_path(comment.user.profile) do %>
+          <%= image_tag comment.user.gravatar_url %>
+          <%= comment.user.try(:username) %>
+          <% end %>：
+        </td>
         <td><%= comment.comment %></td>
         <td>
           <% if comment.user == current_user %>

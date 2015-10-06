@@ -1,62 +1,87 @@
-  <table class="table">
-    <tr>
-      <td><h2>標題<%= @post.topic%></h2></td>
-    </tr>
-    <tr>
-      <td><h4>分類：
-        <% @post.categories.each do |c|%>
-        <span class=" label label-info"><%= c.name %></span>
-        <% end %>
-        </h4>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <% if @post.photo.exists?%>
-        <%= image_tag(@post.photo.url(:medium)) %>
-        <% else %>
-        無上傳圖片
-        <% end %>
-      </td>
-    </tr>
-    <tr>
-      <td class="author">作者：<%= image_tag @post.user.gravatar_url %><%= @post.user.username %></td>
-    </tr>
-    <tr>
-      <td><p>內文：<%= @post.content%></p></td>
-    </tr>
-    <tr>
-      <td>
-        Tags:
-        <% @post.tags.each do |t| %>
-          <%= t.name %>
-        <% end %>
-      </td>
-    </tr>
-
-  </table>
+<div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <div class="fb-like" data-href="https://www.facebook.com/acminiproject2forum?skip_nax_wizard=true" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 
 
-  <% if @post.user == current_user %>
-    <%= link_to '編輯', edit_post_path(@post), class: "btn btn-primary" %>
+<%= link_to '返回首頁', posts_path %>
+
+<table class="table">
+  <tr>
+    <td><h2>標題<%= @post.topic%></h2></td>
+  </tr>
+  <tr>
+    <td><h4>分類：
+      <% @post.categories.each do |c|%>
+      <span class=" label label-info"><%= c.name %></span>
+      <% end %>
+      </h4>
+    </td>
+  </tr>
+  <tr>
+    <td class="author">作者：
+      <%= link_to profile_path(@post.user.profile) do %>
+      <%= image_tag @post.user.gravatar_url %>
+      <%= @post.user.try(:username) %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <% if @post.photo.exists?%>
+      <%= image_tag(@post.photo.url(:medium)) %>
+      <% else %>
+      無上傳圖片
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td><p>內文：<%= @post.content%></p></td>
+  </tr>
+  <tr>
+    <td>
+      標籤:
+      <% @post.tags.each do |t| %>
+        <%= t.name %>
+      <% end %>
+    </td>
+  </tr>
+
+</table>
+
+<% if can_edit_post?(@post) %>
+  <%= link_to '編輯', edit_post_path(@post), class: "btn btn-primary" %>
+<% end %>
+
+<% if current_user %>
+
+  <% if current_user.favorite_post?(@post) %>
+    <%= link_to "取消收藏", favorite_post_path(@post), method: :post, class: "btn btn-success" %>
+  <% else %>
+    <%= link_to "收藏", favorite_post_path(@post), method: :post, class: "btn btn-danger" %>
   <% end %>
+<% end %>
 
-  <% if current_user %>
-  <%= link_to "收藏",   favorite_post_path(@post, type: "favorite"), method: :put, class: "btn btn-success" %>
-  <%= link_to "取消收藏", favorite_post_path(@post, type: "unfavorite"), method: :put, class: "btn btn-danger" %>
-  <% end %>
+<div class="row">
+  <div class="col-md-12">
+    <% if @post.comments.any? %>
+      <h3>留言</h3>
+      <%= render 'comments/comment' %>
 
+    <% else %>
+      <h3>尚無留言</h3>
 
-
-
-  <h3>我要回覆</h3>
-
-  <%= render 'comments/form'%>
-
-  <h3>留言</h3>
-
-  <%= render 'comments/comment' %>
-
-
-  <br>
-  <%= link_to '返回首頁', posts_path %>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h3>我要回覆</h3>
+    <%= render 'comments/form'%>
+  </div>
+</div>

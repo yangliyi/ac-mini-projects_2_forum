@@ -10,7 +10,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-
+      <%= link_to '返回論壇', posts_path %>
         <h1>後台管理頁面</h1>
         <% if flash[:notice].present? %>
           <div class="alert alert-success" role="alert">
@@ -25,8 +25,6 @@
         <% end %>
 
         <%= yield %>
-
-        <%= link_to '返回論壇', posts_path %>
 
       </div>
     </div>
