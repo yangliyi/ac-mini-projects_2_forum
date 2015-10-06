@@ -2,55 +2,34 @@ class PostsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index]
   before_action :set_post, :only => [:edit, :update, :destroy]
+
   def index
-    # if current_user.admin?
-    #   @posts = Post.all
-    # else
-    #   @posts = Post.all.where(status: "published")
-    # end
+
+    @tags = Tag.order("taggings_count DESC").limit(5)
 
     if params[:category_id]
       @category = Category.find(params[:category_id])
-      @posts = current_user.admin? ? @category.posts : @category.posts.where(status: "published")
+      @posts = @category.posts
     else
-      @posts = current_user.admin? ? Post.all : Post.where(status: 'published')
+      @posts = Post.all
     end
 
-    if params[:order]
-      @posts = @posts.order("#{params[:order]} desc").page(params[:page]).per(10)
-    else
-      @posts = @posts.order("id DESC").page(params[:page]).per(10)
+    if params[:tag_id]
+      @tag = Tag.find(params[:tag_id])
+      @posts = @tag.posts
     end
 
-    # if params[:order] == "last_comment"
-    # elsif params[:order] == "comments_count"
-      # @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
-    # elsif params[:order] == "created_at"
-      # @posts = @posts.order('created_at desc').page(params[:page]).per(10)
-    # end
+    unless current_user && current_user.admin?
+      @posts = @posts.where(status: 'published')
+    end
 
-    # if params[:category_id]
+    if ["comments_count", "id", "last_comment"].include?( params[:order] )
+      @posts = @posts.order("#{params[:order]} DESC")
+    else
+      @posts = @posts.order("id DESC")
+    end
 
-    #   @category = Category.find(params[:category_id])
-    #   @posts = @category.posts
-
-
-      # if params[:order] == "last_comment"
-      #   @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
-      # elsif params[:order] == "replies"
-      #   @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
-      # else
-      #   @posts = @posts.order('created_at desc').page(params[:page]).per(10)
-      # end
-    # else
-      # if params[:order] == "last_comment"
-      #   @posts = @posts.order('last_comment desc').page(params[:page]).per(10)
-      # elsif params[:order] == "replies"
-      #   @posts = @posts.order("comments_count desc").page(params[:page]).per(10)
-      # else
-      #   @posts = @posts.order('created_at desc').page(params[:page]).per(10)
-      # end
-    # end
+    @posts = @posts.page(params[:page]).per(10)
   end
 
   def new
@@ -66,7 +45,7 @@ class PostsController < ApplicationController
 
     if @post.save
       flash[:notice] = "文章新增成功！"
-      if @post.status == "published"
+      if @post.published?
         redirect_to post_path(@post)
       else
         redirect_to profile_path(current_user.profile)
@@ -84,7 +63,7 @@ class PostsController < ApplicationController
 
     if @post.update(post_params)
       flash[:notice] = "文章修改成功！"
-      if @post.status == "published"
+      if @post.published?
         redirect_to post_path(@post)
       else
         redirect_to profile_path(current_user.profile)
@@ -96,11 +75,11 @@ class PostsController < ApplicationController
   end
 
   def show
-      if current_user.admin?
-        @post = Post.find(params[:id])
-      else
-        @post = Post.where(status: "published").find(params[:id])
-      end
+    if current_user.admin?
+      @post = Post.find(params[:id])
+    else
+      @post = Post.where(status: "published").find(params[:id])
+    end
   end
 
   def destroy
@@ -121,19 +100,13 @@ class PostsController < ApplicationController
   # for current_user
   def favorite
     @post = Post.find(params[:id])
-    type = params[:type]
 
-    if type == "favorite"
-      current_user.favorites << @post
-      redirect_to :back, notice: "收藏 #{@post.topic}"
-
-    elsif type == "unfavorite"
+    if current_user.favorite_post?(@post)
       current_user.favorites.delete(@post)
       redirect_to :back, notice: "取消收藏 #{@post.topic}"
-
     else
-      # Type missing, nothing happens
-      redirect_to :back
+      current_user.favorites << @post
+      redirect_to :back, notice: "收藏 #{@post.topic}"
     end
   end
 
@@ -148,7 +121,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, :tag_list, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, :tag_list, :tag_id, category_ids: [])
   end
 
 end
