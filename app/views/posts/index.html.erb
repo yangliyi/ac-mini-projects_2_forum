@@ -1,48 +1,34 @@
-<div class="login">
-  <% if current_user %>
-  嗨 <%= current_user.username %>, 歡迎！
-  <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
-  <%= link_to('帳號設定', edit_registration_path(:user) ) %>
-    <% if current_user.profile == nil %>
-    | <%= link_to '新增個人資料', new_profile_path %>
-    <% else %>
-    | <%= link_to '個人資料', profile_path(current_user.profile)%>
-    <% end %>
-  <% else %>
-  <%= link_to('註冊', new_registration_path(:user)) %> |
-  <%= link_to('登入', new_session_path(:user)) %> |
-  <%= link_to "Facebook 登入", user_omniauth_authorize_path(:facebook) %>
-  <% end %>
-</div>
-<div class="clearfix"></div>
-
 <div id="logo">
   <h1></h1>
 </div>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 sort">
     偏好排序：
     <%= link_to '回覆數', posts_path(order: "comments_count", category_id: params[:category_id]), class: "btn btn-primary" %>
-    <%= link_to '文章發佈時間(預設)', posts_path(order: "created_at", category_id: params[:category_id]), class: "btn btn-primary" %>
+    <%= link_to '文章發佈時間(預設)', posts_path(order: "id", category_id: params[:category_id]), class: "btn btn-primary" %>
     <%= link_to '最後回覆時間', posts_path(order: "last_comment", category_id: params[:category_id]), class: "btn btn-primary" %>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-9">
-    <div class="row">
-      <div id="new-post"class="col-md-12">
-        類別搜尋：
-        <%= link_to '全部', posts_path, class: "btn btn-primary"  %>
-        <% Category.all.each do |category| %>
-        <%= link_to category.name, posts_path(category_id: category), class: "btn btn-primary" %>
-        <% end %>
-      </div>
-    </div>
+  <div class="col-md-12 sort">
+    類別搜尋：
+    <%= link_to '全部', posts_path, class: "btn btn-primary"  %>
+    <% Category.all.each do |category| %>
+    <%= link_to category.name, posts_path(category_id: category), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9 sort">
+    熱門標籤：
+    <% @tags.each do |tag| %>
+    <%= link_to tag.name, posts_path(tag_id: tag), class: "btn btn-primary" %>
+    <% end %>
   </div>
   <div class="col-md-3 about">
     <ul>
       <li id="forum">
-        <%= link_to '關於我', about_posts_path, class: "btn btn-info" %>
+        <%= link_to '關於我', about_path, class: "btn btn-info" %>
       </li>
       <li id="new-post">
         <%= link_to '新文章', new_post_path, class: "btn btn-info" %>
@@ -62,10 +48,8 @@
         <th>參與討論者</th>
         <th>最後回覆時間</th>
         <th>最後回覆</th>
-        <% if current_user %>
-          <% if current_user.admin? %>
-            <th>文章狀態</th>
-          <% end %>
+        <% if current_user && current_user.admin? %>
+          <th>文章狀態</th>
         <% end %>
         <th id="function"></th>
       </tr>
@@ -75,7 +59,6 @@
           <td><%= link_to post.topic, post_path(post)  %></td>
           <td class="author">
             <%= link_to profile_path(post.user.profile) do %>
-              <%= image_tag post.user.gravatar_url %>
               <%= post.user.try(:username) %>
             <% end %>
           </td>
@@ -87,10 +70,9 @@
           </td>
           <td><%= post.comments.size %></td>
           <td class="author">
-            <% post.comments.map{ |c| c.user }.uniq.each do |user| %>
+            <% post.comment_users.each do |user| %>
               <%= link_to profile_path(user.profile) do %>
               <%= image_tag user.gravatar_url %>
-              <%= user.username %>
               <% end %>
             <% end %>
           </td>
@@ -100,25 +82,24 @@
             <%= '尚無留言' %>
             <% end %>
           </td>
-          <td><% if post.comments.any? %>
-            <%=  post.comments.last.user.try(:username) %>
+          <td class="author">
+            <% if post.comments.any? %>
+              <%= link_to profile_path(post.comments.last.user.profile) do %>
+              <%= image_tag post.comments.last.user.gravatar_url %>
+              <% end %>
             <% else %>
             <%= link_to '成為第一個留言的使用者!', post_path(post) %>
             <% end %>
           </td>
-          <% if current_user %>
-            <% if current_user.admin? %>
-              <td>
-                <%= post.status %>
-              </td>
-            <% end %>
+          <% if current_user && current_user.admin? %>
+            <td>
+              <%= post.status %>
+            </td>
           <% end %>
           <td>
-            <% if current_user %>
-              <% if current_user == post.user || current_user.admin? %>
+            <% if can_edit_post?(post) %>
                 <%= link_to "編輯", edit_post_path(post), class: "btn btn-success" %>
                 <%= link_to "刪除", post_path(post), method: :delete, data: { confirm: "你確定要刪除這則文章?" }, class: "btn btn-danger" %>
-              <% end %>
             <% end %>
           </td>
         </tr>

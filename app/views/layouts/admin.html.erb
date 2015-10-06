@@ -9,14 +9,33 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-      <%= link_to '返回論壇', posts_path %>
-        <h1>後台管理頁面</h1>
+      <div class="col-md-12 nav-admin">
         <% if flash[:notice].present? %>
           <div class="alert alert-success" role="alert">
             <%= flash[:notice] %>
           </div>
         <% end %>
+        <%= link_to '返回論壇', posts_path %>
+        <div class="login">
+        <% if current_user %>
+        嗨 <%= current_user.username %>, 歡迎！
+        <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
+        <%= link_to('帳號設定', edit_registration_path(:user) ) %>
+          <% unless current_user.profile %>
+          | <%= link_to '新增個人資料', new_profile_path %>
+          <% else %>
+          | <%= link_to '個人資料', profile_path(current_user.profile)%>
+          <% end %>
+          <% if current_user && current_user.admin? %>
+          | <%= link_to '後台管理頁面', admin_users_path %>
+          <% end %>
+        <% else %>
+        <%= link_to('註冊', new_registration_path(:user)) %> |
+        <%= link_to('登入', new_session_path(:user)) %> |
+        <%= link_to "Facebook 登入", user_omniauth_authorize_path(:facebook) %>
+        <% end %>
+      </div>
+      <h1>後台管理頁面</h1>
 
         <% if flash[:alert].present? %>
           <div class="alert alert-danger" role="alert">

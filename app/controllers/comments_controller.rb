@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
       @comment = @post.comments.find(params[:id])
       @comment.destroy
     else
-      notice: "抱歉你沒有刪除文章的權限"
+      flash[:notice] = "抱歉你沒有刪除文章的權限！"
     end
     redirect_to post_path(@post)
   end
