@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
   def create
     @comment = @post.comments.create(comment_params)
     @comment.user = current_user
-    @post.last_comment = Time.now
+    @post.last_comment = @post.comments.last.created_at
 
     if @comment.save
       @post.save
