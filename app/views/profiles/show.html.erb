@@ -7,7 +7,6 @@
     <td>簡短介紹：<%= @profile.bio %></td>
   </tr>
 </table>
-
 按讚的文章：
 <table class="table table-striped">
 <% @profile.user.liked_posts.each do |p| %>
@@ -23,7 +22,19 @@
   <tr>
     <td><%= link_to f.topic, post_path(f)%></td>
     <td>
-      <%= link_to "取消收藏", favorite_post_path(f, type: "unfavorite"), method: :put, class: "btn btn-danger" %>
+      <%= link_to "取消收藏", favorite_post_path(f), method: :post, class: "btn btn-danger" %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+訂閱的文章：
+<table class="table table-striped">
+<% @profile.user.subscribed_posts.each do |s| %>
+  <tr>
+    <td><%= link_to s.topic, post_path(s)%></td>
+    <td>
+      <%= link_to "取消訂閱", subscribe_post_path(s), method: :post, class: "btn btn-danger" %>
     </td>
   </tr>
   <% end %>
