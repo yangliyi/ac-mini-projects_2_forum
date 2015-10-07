@@ -87,21 +87,6 @@
     <% end %>
 <% end %>
 
-<div class="row">
-  <div class="col-md-12">
-    <% if @post.comments.any? %>
-      <h3>留言</h3>
-      <%= render 'comments/comment' %>
-
-    <% else %>
-      <h3>尚無留言</h3>
-
-    <% end %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h3>我要回覆</h3>
-    <%= render 'comments/form'%>
-  </div>
+<div id="comments">
+  <%= render 'comments/comment' %>
 </div>

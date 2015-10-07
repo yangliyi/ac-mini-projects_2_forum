@@ -10,7 +10,12 @@ class CommentsController < ApplicationController
 
     if @comment.save
       @post.save
-      redirect_to post_path(@post)
+      respond_to do |format|
+        format.html {
+          redirect_to post_path(@post)
+        }
+        format.js
+      end
     end
   end
 
