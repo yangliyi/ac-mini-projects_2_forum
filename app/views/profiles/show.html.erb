@@ -8,6 +8,15 @@
   </tr>
 </table>
 
+按讚的文章：
+<table class="table table-striped">
+<% @profile.user.liked_posts.each do |p| %>
+  <tr>
+    <td><%= link_to p.topic, post_path(p)%></td>
+  </tr>
+  <% end %>
+</table>
+
 收藏的文章：
 <table class="table table-striped">
 <% @profile.user.favorites.each do |f| %>
@@ -22,14 +31,14 @@
 
 
 <% if current_user == @profile.user || current_user.admin? %>
-<%= '尚未發布的草稿：' %>
-<table class="table">
-  <% @profile.user.posts.where(status: "draft").each do |p| %>
+  <%= '尚未發布的草稿：' %>
+  <table class="table">
+    <% @profile.user.posts.where(status: "draft").each do |p| %>
     <tr>
       <td><%= link_to p.topic, edit_post_path(p) %></td>
     </tr>
-  <% end %>
-</table>
+    <% end %>
+  </table>
 <% end %>
 
 

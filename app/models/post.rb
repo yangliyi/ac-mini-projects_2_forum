@@ -6,6 +6,9 @@ class Post < ActiveRecord::Base
   # Favorited by users
   has_many :favorite_posts
   has_many :favorited_by, through: :favorite_posts, source: :user # favorite_users
+  # Favorited by users
+  has_many :user_post_likeships
+  has_many :liked_users, through: :user_post_likeships, source: :user
 
   has_many :taggings
   has_many :tags, through: :taggings

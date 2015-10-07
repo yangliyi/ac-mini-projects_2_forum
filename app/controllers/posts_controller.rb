@@ -103,10 +103,34 @@ class PostsController < ApplicationController
 
     if current_user.favorite_post?(@post)
       current_user.favorites.delete(@post)
-      redirect_to :back, notice: "取消收藏 #{@post.topic}"
+      redirect_to :back
     else
       current_user.favorites << @post
-      redirect_to :back, notice: "收藏 #{@post.topic}"
+      redirect_to :back
+    end
+  end
+
+  # Add and remove liked posts
+  # for current_user
+  def like
+    @post = Post.find(params[:id])
+
+    if current_user.like_post?(@post)
+      current_user.liked_posts.delete(@post)
+      respond_to do |format|
+        format.html {
+          redirect_to :back
+        }
+        format.js
+      end
+    else
+      current_user.liked_posts << @post
+      respond_to do |format|
+        format.html {
+          redirect_to :back
+        }
+        format.js
+      end
     end
   end
 
