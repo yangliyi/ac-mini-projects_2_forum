@@ -18,6 +18,7 @@ gem 'kaminari'
 gem 'gravtastic'
 gem 'omniauth-facebook'
 gem "paperclip"
+gem 'turbolinks'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
