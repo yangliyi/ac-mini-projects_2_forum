@@ -19,9 +19,18 @@ class User < ActiveRecord::Base
   # Favorite posts of user
   has_many :favorite_posts
   has_many :favorites, through: :favorite_posts, source: :post
+
   # Liked posts of user
   has_many :user_post_likeships
   has_many :liked_posts, through: :user_post_likeships, source: :post
+
+  # subscribed posts of user
+  has_many :user_post_subscribeships
+  has_many :subscribed_posts, through: :user_post_subscribeships, source: :post
+
+  def admin?
+    self.role == "admin"
+  end
 
   def favorite_post?(post)
     self.favorites.include?(post)
@@ -29,6 +38,10 @@ class User < ActiveRecord::Base
 
   def like_post?(post)
     self.liked_posts.include?(post)
+  end
+
+  def subscribe_post?(post)
+    self.subscribed_posts.include?(post)
   end
 
   def self.fb_email(fb_token)
@@ -68,10 +81,6 @@ class User < ActiveRecord::Base
      #user.fb_raw_data = auth
      user.save!
     return user
-  end
-
-  def admin?
-    self.role == "admin"
   end
 
 end

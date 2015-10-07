@@ -134,6 +134,24 @@ class PostsController < ApplicationController
     end
   end
 
+  # Add and remove subscribed posts
+  # for current_user
+  def subscribe
+    @post = Post.find(params[:id])
+
+    if current_user.subscribe_post?(@post)
+      current_user.subscribed_posts.delete(@post)
+    else
+      current_user.subscribed_posts << @post
+    end
+    respond_to do |format|
+        format.html {
+          redirect_to :back
+        }
+        format.js
+    end
+  end
+
   private
 
   def set_post

@@ -1,0 +1,12 @@
+$('#subscribe').children('span').toggleClass('btn-success');
+$('#subscribe').children('span').toggleClass('btn-default');
+
+<% if current_user.subscribe_post?(@post) %>
+  $('#subscribe').children('span').html('取消訂閱');
+<% else %>
+  $('#subscribe').children('span').html('訂閱');
+<% end %>
+
+$('#subscribe').children('span').last().html('<%= @post.subscribed_users.count %>');
+
+
