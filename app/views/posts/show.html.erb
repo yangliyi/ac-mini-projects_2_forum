@@ -24,7 +24,7 @@
     <td class="author">作者：
       <%= link_to profile_path(@post.user.profile) do %>
       <%= image_tag @post.user.gravatar_url %>
-      <%= @post.user.try(:username) %>
+      <%= @post.user.username %>
       <% end %>
     </td>
   </tr>
@@ -48,7 +48,25 @@
       <% end %>
     </td>
   </tr>
+</table>
 
+<table class="table">
+  <tr>
+    <td id="like">
+      <%= render :partial => "like" %>
+    </td>
+  </tr>
+  <tr>
+    <td class="author">
+      Like 這篇文章的人：
+      <% @post.liked_users.each do |u| %>
+        <%= link_to profile_path(u.profile) do %>
+          <%= image_tag u.gravatar_url %>
+          <%= u.username %>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
 </table>
 
 <% if can_edit_post?(@post) %>

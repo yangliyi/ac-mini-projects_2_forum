@@ -19,9 +19,16 @@ class User < ActiveRecord::Base
   # Favorite posts of user
   has_many :favorite_posts
   has_many :favorites, through: :favorite_posts, source: :post
+  # Liked posts of user
+  has_many :user_post_likeships
+  has_many :liked_posts, through: :user_post_likeships, source: :post
 
   def favorite_post?(post)
     self.favorites.include?(post)
+  end
+
+  def like_post?(post)
+    self.liked_posts.include?(post)
   end
 
   def self.fb_email(fb_token)

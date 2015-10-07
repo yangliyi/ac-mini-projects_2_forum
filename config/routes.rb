@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
     member do
       post :favorite
+      post :like
     end
   end
 

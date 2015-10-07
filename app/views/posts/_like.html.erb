@@ -1,0 +1,16 @@
+<% @post = Post.find(params[:id]) %>
+<% if current_user.like_post?(@post) %>
+  <%= link_to like_post_path(@post), method: :post, remote: true, class: "btn btn-primary" do %>
+    <%= 'Unlike' %>
+    <span class="badge">
+    <%= @post.liked_users_count %>
+    </span>
+  <% end %>
+  <% else %>
+  <%= link_to like_post_path(@post), method: :post, remote: true, class: "btn btn-primary" do %>
+    <%= 'Like' %>
+    <span class="badge">
+      <%= @post.liked_users_count %>
+    </span>
+  <% end %>
+<% end %>

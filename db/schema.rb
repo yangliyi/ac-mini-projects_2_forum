@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006030007) do
+ActiveRecord::Schema.define(version: 20151007043737) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20151006030007) do
   create_table "posts", force: :cascade do |t|
     t.string   "topic"
     t.text     "content"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "comments_count"
     t.datetime "last_comment"
     t.integer  "user_id"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20151006030007) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.integer  "liked_users_count",  default: 0
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
@@ -95,6 +96,16 @@ ActiveRecord::Schema.define(version: 20151006030007) do
     t.datetime "updated_at",                 null: false
     t.integer  "taggings_count", default: 0
   end
+
+  create_table "user_post_likeships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_post_likeships", ["post_id"], name: "index_user_post_likeships_on_post_id"
+  add_index "user_post_likeships", ["user_id"], name: "index_user_post_likeships_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
