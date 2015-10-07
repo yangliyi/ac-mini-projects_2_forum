@@ -19,10 +19,13 @@ class CommentsController < ApplicationController
     if current_user.admin? || current_user = @comment.user
       @comment = @post.comments.find(params[:id])
       @comment.destroy
-    else
-      flash[:notice] = "抱歉你沒有刪除文章的權限！"
+      respond_to do |format|
+        format.html {
+          redirect_to post_path(@post)
+        }
+        format.js
+      end
     end
-    redirect_to post_path(@post)
   end
 
   private

@@ -2,7 +2,7 @@
   <div class="col-md-6">
     <table class="table">
       <% @post.comments.each do |comment|%>
-      <tr>
+      <tr id="comment-<%= comment.id %>">
         <td class="comment-commenter">
           <%= link_to profile_path(comment.user.profile) do %>
           <%= image_tag comment.user.gravatar_url %>
@@ -12,7 +12,7 @@
         <td><%= comment.comment %></td>
         <td>
           <% if comment.user == current_user %>
-          <%= link_to '刪除留言', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          <%= link_to '刪除留言', post_comment_path(@post, comment), method: :delete, remote: true, class: "btn btn-danger" %>
           <% end %>
         </td>
       </tr>
