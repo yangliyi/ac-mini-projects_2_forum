@@ -19,7 +19,7 @@
           <% unless current_user.profile %>
           | <%= link_to '新增個人資料', new_profile_path %>
           <% else %>
-          | <%= link_to '個人資料', profile_path(current_user.profile)%>
+          | <%= link_to '個人資料', profile_path(current_user.username)%>
           <% end %>
           <% if current_user && current_user.admin? %>
           | <%= link_to '後台管理頁面', admin_users_path %>

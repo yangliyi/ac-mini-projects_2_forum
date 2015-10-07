@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td class="author">作者：
-      <%= link_to profile_path(@post.user.profile) do %>
+      <%= link_to profile_path(@post.user.username) do %>
       <%= image_tag @post.user.gravatar_url %>
       <%= @post.user.username %>
       <% end %>
@@ -52,19 +52,8 @@
 
 <table class="table">
   <tr>
-    <td id="like">
+    <td id="like" class="author">
       <%= render :partial => "like" %>
-    </td>
-  </tr>
-  <tr>
-    <td class="author">
-      Like 這篇文章的人：
-      <% @post.liked_users.each do |u| %>
-        <%= link_to profile_path(u.profile) do %>
-          <%= image_tag u.gravatar_url %>
-          <%= u.username %>
-        <% end %>
-      <% end %>
     </td>
   </tr>
 </table>
@@ -74,12 +63,22 @@
 <% end %>
 
 <% if current_user %>
-
   <% if current_user.favorite_post?(@post) %>
-    <%= link_to "取消收藏", favorite_post_path(@post), method: :post, class: "btn btn-danger" %>
+    <%= link_to "取消收藏", favorite_post_path(@post), method: :post, class: "btn btn-success" %>
   <% else %>
-    <%= link_to "收藏", favorite_post_path(@post), method: :post, class: "btn btn-success" %>
+    <%= link_to "收藏", favorite_post_path(@post), method: :post, class: "btn btn-default" %>
   <% end %>
+<% end %>
+
+<% if current_user %>
+    <%= link_to subscribe_post_path(@post), method: :post, class: "btn", id: "subscribe", remote: true do %>
+      <% if current_user.subscribe_post?(@post) %>
+        <span class="btn btn-success">取消訂閱</span>
+      <% else %>
+        <span class="btn btn-default">訂閱</span>
+      <% end %>
+      <span class="badge"><%= @post.subscribed_users.size %></span>
+    <% end %>
 <% end %>
 
 <div class="row">

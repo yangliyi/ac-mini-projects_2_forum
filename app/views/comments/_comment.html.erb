@@ -4,7 +4,7 @@
       <% @post.comments.each do |comment|%>
       <tr id="comment-<%= comment.id %>">
         <td class="comment-commenter">
-          <%= link_to profile_path(comment.user.profile) do %>
+          <%= link_to profile_path(comment.user.username) do %>
           <%= image_tag comment.user.gravatar_url %>
           <%= comment.user.try(:username) %>
           <% end %>：

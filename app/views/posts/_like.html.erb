@@ -7,10 +7,17 @@
     </span>
   <% end %>
   <% else %>
-  <%= link_to like_post_path(@post), method: :post, remote: true, class: "btn btn-primary" do %>
+  <%= link_to like_post_path(@post), method: :post, remote: true, class: "btn btn-default" do %>
     <%= 'Like' %>
     <span class="badge">
       <%= @post.liked_users_count %>
     </span>
+  <% end %>
+<% end %>
+Like 這篇文章的人：
+<% @post.liked_users.each do |u| %>
+  <%= link_to profile_path(u.username) do %>
+    <%= image_tag u.gravatar_url %>
+    <%= u.username %>
   <% end %>
 <% end %>

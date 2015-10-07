@@ -58,7 +58,7 @@
         <tr>
           <td><%= link_to post.topic, post_path(post)  %></td>
           <td class="author">
-            <%= link_to profile_path(post.user.profile) do %>
+            <%= link_to profile_path(post.user.username) do %>
               <%= post.user.try(:username) %>
             <% end %>
           </td>
@@ -71,7 +71,7 @@
           <td><%= post.comments.size %></td>
           <td class="author">
             <% post.comment_users.each do |user| %>
-              <%= link_to profile_path(user.profile) do %>
+              <%= link_to profile_path(user.username) do %>
               <%= image_tag user.gravatar_url %>
               <% end %>
             <% end %>
@@ -84,7 +84,7 @@
           </td>
           <td class="author">
             <% if post.comments.any? %>
-              <%= link_to profile_path(post.comments.last.user.profile) do %>
+              <%= link_to profile_path(post.comments.last.user.username) do %>
               <%= image_tag post.comments.last.user.gravatar_url %>
               <% end %>
             <% else %>
