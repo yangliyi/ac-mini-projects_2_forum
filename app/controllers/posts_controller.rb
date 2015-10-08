@@ -37,6 +37,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @pictures = @post.pictures
   end
 
   def create
@@ -44,8 +45,13 @@ class PostsController < ApplicationController
     @post.user = current_user
 
     if @post.save
-      flash[:notice] = "文章新增成功！"
+      if params[:images]
+        params[:images].each { |image|
+          @post.pictures.create(image: image)
+        }
+      end
       if @post.published?
+        flash[:notice] = "文章新增成功！"
         redirect_to post_path(@post)
       else
         redirect_to profile_path(current_user.profile)
@@ -58,10 +64,18 @@ class PostsController < ApplicationController
 
   def update
     if params[:destroy_photo] == "1"
-        @post.photo = nil
+      @post.photo = nil
+    elsif params[:destroy_image] == "1"
+      @post.pictures.delete_all
     end
 
+
     if @post.update(post_params)
+      if params[:images]
+        params[:images].each { |image|
+          @post.pictures.create(image: image)
+        }
+        end
       flash[:notice] = "文章修改成功！"
       if @post.published?
         redirect_to post_path(@post)
@@ -80,6 +94,7 @@ class PostsController < ApplicationController
     else
       @post = Post.where(status: "published").find(params[:id])
     end
+      @pictures = @post.pictures
   end
 
   def destroy
@@ -163,7 +178,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, :tag_list, :tag_id, category_ids: [])
+    params.require(:post).permit(:topic, :content, :status, :post_id, :photo, :pictures, :tag_list, :tag_id, category_ids: [])
   end
 
 end

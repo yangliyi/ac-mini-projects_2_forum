@@ -31,7 +31,15 @@
     <%= f.file_field :photo %>
 
     <% if @post.photo.exists? %>
-      <%= check_box_tag "destroy_photo", "1" %> 刪除圖片
+      <%= check_box_tag "destroy_photo", "1" %> 刪除主題圖片
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :pictures, '可選擇多個檔案上傳', :class => 'control-label' %>
+    <%= file_field_tag "images[]", type: :file, multiple: true %>
+    <% if @pictures.exists? %>
+      <%= check_box_tag "destroy_image", "1" %> 刪除圖片重新上傳
     <% end %>
   </div>
 

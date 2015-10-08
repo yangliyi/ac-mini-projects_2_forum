@@ -12,6 +12,9 @@ class Post < ActiveRecord::Base
   # Subscribed by users
   has_many :user_post_subscribeships
   has_many :subscribed_users, through: :user_post_subscribeships, source: :user
+  # pictures
+  has_many :pictures, :dependent => :destroy
+
 
   has_many :taggings
   has_many :tags, through: :taggings

@@ -48,6 +48,17 @@
   </tr>
   <tr>
     <td>
+      <% if @pictures.exists?%>
+        <% @pictures.each do |pic| %>
+          <%= image_tag (pic.image.url(:medium))%>
+        <% end %>
+      <% else %>
+      無上傳圖片
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td>
       標籤:
       <% @post.tags.each do |t| %>
         <%= t.name %>
