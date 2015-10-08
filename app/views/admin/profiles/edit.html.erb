@@ -1,4 +1,4 @@
-<%= form_for @profile, :url => admin_profile_path(@profile) do |f| %>
+<%= form_for @profile, :url => admin_profile_path(@profile.user.username) do |f| %>
 
   <% if @profile.errors.any? %>
     <div id="error_explanation">

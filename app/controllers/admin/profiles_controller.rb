@@ -1,15 +1,14 @@
 class Admin::ProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin
+  before_action :set_profile, :only => [:edit, :update]
 
   layout "admin"
 
   def edit
-    @profile = Profile.find(params[:id])
   end
 
   def update
-    @profile = Profile.find(params[:id])
     if @profile.update(profile_params)
       flash[:notice] = "個人資料修改成功！"
       redirect_to admin_users_path
@@ -20,6 +19,10 @@ class Admin::ProfilesController < ApplicationController
 
 
   protected
+
+  def set_profile
+    @profile = User.find_by_username(params[:id]).profile
+  end
 
   def profile_params
     params.require(:profile).permit(:bio)

@@ -33,7 +33,10 @@
   <% @users.each do |u| %>
   <tr>
     <td>
-      <%= image_tag u.gravatar_url %><%= u.username %>
+      <%= link_to profile_path(u.username) do %>
+      <%= image_tag u.gravatar_url %>
+      <%= u.username %>
+      <% end %>
     </td>
     <td>
       <%= u.profile.bio %>
@@ -42,7 +45,7 @@
       <%= u.role %>
     </td>
     <td>
-      <%= link_to '編輯使用者資料', edit_admin_profile_path(u.profile), class: "btn btn-success" %>
+      <%= link_to '編輯使用者資料', edit_admin_profile_path(u.username), class: "btn btn-success" %>
       <%= link_to '修改權限', edit_admin_user_path(u), class: "btn btn-warning"  %>
     </td>
   </tr>

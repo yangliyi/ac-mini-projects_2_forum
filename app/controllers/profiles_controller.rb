@@ -22,11 +22,9 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    @profile = Profile.find(params[:id])
   end
 
   def update
-    @profile = Profile.find(params[:id])
     if @profile.update(profile_params)
       flash[:notice] = "個人資料修改成功！"
       redirect_to profile_path(@profile)
