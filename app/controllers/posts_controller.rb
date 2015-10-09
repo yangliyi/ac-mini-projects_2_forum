@@ -8,6 +8,7 @@ class PostsController < ApplicationController
     @tags = Tag.order("taggings_count DESC").limit(5)
 
     @q = Post.ransack(params[:q])
+    @q.sorts = 'id DESC' if @q.sorts.empty?
     @posts = @q.result(distinct: true)
     @posts = @posts.page(params[:page]).per(10)
     #if params[:category_id]
