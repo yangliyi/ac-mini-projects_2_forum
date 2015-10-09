@@ -16,5 +16,6 @@
 //= require_tree .
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require select2
 
 Turbolinks.enableProgressBar();
