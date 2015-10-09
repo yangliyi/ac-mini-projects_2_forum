@@ -2,12 +2,6 @@
   <h1></h1>
 </div>
 <div class="row">
-  <div class="col-md-12 sort">
-    偏好排序：
-    <%= link_to '回覆數', posts_path(order: "comments_count", category_id: params[:category_id]), class: "btn btn-primary" %>
-    <%= link_to '文章發佈時間(預設)', posts_path(order: "id", category_id: params[:category_id]), class: "btn btn-primary" %>
-    <%= link_to '最後回覆時間', posts_path(order: "last_comment", category_id: params[:category_id]), class: "btn btn-primary" %>
-  </div>
 </div>
 <div class="row">
   <div class="col-md-12 sort">
@@ -19,19 +13,28 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-9 sort">
+  <div class="col-md-5 sort">
     熱門標籤：
     <% @tags.each do |tag| %>
     <%= link_to tag.name, posts_path(tag_id: tag), class: "btn btn-primary" %>
     <% end %>
   </div>
-  <div class="col-md-3 about">
+  <div class="col-md-7 about">
     <ul>
       <li id="forum">
         <%= link_to '關於我', about_path, class: "btn btn-info" %>
       </li>
       <li id="new-post">
         <%= link_to '新文章', new_post_path, class: "btn btn-info" %>
+      </li>
+      <li>
+        <div class="form-inline">
+          <%= search_form_for @q, :url => posts_path do |f| %>
+          <%= f.label :topic_cont, '搜尋文章標題包含：' %>
+          <%= f.search_field :topic_cont ,class: "form-control" %>
+          <%= f.submit class: "btn btn-default" %>
+          <% end %>
+        </div>
       </li>
     </ul>
   </div>
@@ -42,12 +45,11 @@
       <tr class="info">
         <th>標題</th>
         <th>作者</th>
-        <th>文章發佈時間</th>
         <th>分類</th>
-        <th>回覆數</th>
         <th>參與討論者</th>
-        <th>最後回覆時間</th>
         <th>最後回覆</th>
+        <th><%= sort_link(@q, :comments_count, '回覆數') %></th>
+        <th><%= sort_link(@q, :created_at, '文章發佈時間') %></th>        <th><%= sort_link(@q, :last_comment, '最後回覆時間') %></th>
         <% if current_user && current_user.admin? %>
           <th>文章狀態</th>
         <% end %>
@@ -62,24 +64,16 @@
               <%= post.user.try(:username) %>
             <% end %>
           </td>
-          <td><%= post.created_at.strftime('%b %d %Y %H:%M') %></td>
           <td>
               <% post.categories.each do |cat|%>
                 <span class=" label label-info"><%= cat.name %></span>
               <% end %>
           </td>
-          <td><%= post.comments.size %></td>
           <td class="author">
             <% post.comment_users.each do |user| %>
               <%= link_to profile_path(user.username) do %>
               <%= image_tag user.gravatar_url %>
               <% end %>
-            <% end %>
-          </td>
-          <td><% if post.comments.any? %>
-            <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M') %>
-            <% else %>
-            <%= '尚無留言' %>
             <% end %>
           </td>
           <td class="author">
@@ -91,6 +85,14 @@
             <%= link_to '成為第一個留言的使用者!', post_path(post) %>
             <% end %>
           </td>
+          <td><%= post.comments.size %></td>
+          <td><% if post.comments.any? %>
+            <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M') %>
+            <% else %>
+            <%= '尚無留言' %>
+            <% end %>
+          </td>
+          <td><%= post.created_at.strftime('%b %d %Y %H:%M') %></td>
           <% if current_user && current_user.admin? %>
             <td>
               <%= post.status %>

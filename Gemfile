@@ -19,6 +19,7 @@ gem 'gravtastic'
 gem 'omniauth-facebook'
 gem "paperclip"
 gem "select2-rails"
+gem 'ransack'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

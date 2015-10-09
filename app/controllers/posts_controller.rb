@@ -7,29 +7,30 @@ class PostsController < ApplicationController
 
     @tags = Tag.order("taggings_count DESC").limit(5)
 
-    if params[:category_id]
-      @category = Category.find(params[:category_id])
-      @posts = @category.posts
-    else
-      @posts = Post.all
-    end
-
-    if params[:tag_id]
-      @tag = Tag.find(params[:tag_id])
-      @posts = @tag.posts
-    end
-
-    unless current_user && current_user.admin?
-      @posts = @posts.where(status: 'published')
-    end
-
-    if ["comments_count", "id", "last_comment"].include?( params[:order] )
-      @posts = @posts.order("#{params[:order]} DESC")
-    else
-      @posts = @posts.order("id DESC")
-    end
-
+    @q = Post.ransack(params[:q])
+    @posts = @q.result(distinct: true)
     @posts = @posts.page(params[:page]).per(10)
+    #if params[:category_id]
+    #  @category = Category.find(params[:category_id])
+    #  @posts = @category.posts
+    #else
+    #  @posts = Post.all
+    #end
+
+    #if params[:tag_id]
+    #  @tag = Tag.find(params[:tag_id])
+    #  @posts = @tag.posts
+    #end
+
+    #unless current_user && current_user.admin?
+    #  @posts = @posts.where(status: 'published')
+    #end
+
+    #if ["comments_count", "id", "last_comment"].include?( params[:order] )
+    #  @posts = @posts.order("#{params[:order]} DESC")
+    #else
+    #  @posts = @posts.order("id DESC")
+    #end
   end
 
   def new
