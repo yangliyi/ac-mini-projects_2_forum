@@ -37,7 +37,6 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @pictures = @post.pictures
   end
 
   def create
