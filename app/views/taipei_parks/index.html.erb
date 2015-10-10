@@ -1,0 +1,41 @@
+<table>
+  <tr>
+    <th>Administration</th>
+    <th>Number of Parks</th>
+  </tr>
+    <% @park_nums_per_area.each do |a| %>
+  <tr>
+    <td>
+      <%= a[0] %>
+    </td>
+    <td>
+      <%= a[1] %>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td>
+      Total park numbers：
+    </td>
+    <td>
+      <%= @taipeiparks.count %>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Park Name</th>
+    <th>Administrative Area</th>
+    <th>Location</th>
+  </tr>
+<% @taipeiparks.each do |p| %>
+  <tr>
+    <td><%= p.name %></td>
+    <td><%= p.administrativearea %></td>
+    <td><%= p.location %></td>
+  </tr>
+<% end %>
+
+</table>
+

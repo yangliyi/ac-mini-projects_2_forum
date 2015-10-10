@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151008084710) do
+ActiveRecord::Schema.define(version: 20151010023138) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -109,6 +109,15 @@ ActiveRecord::Schema.define(version: 20151008084710) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "taggings_count", default: 0
+  end
+
+  create_table "taipei_parks", force: :cascade do |t|
+    t.integer  "park_id"
+    t.string   "name"
+    t.string   "administrativearea"
+    t.string   "location"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "user_post_likeships", force: :cascade do |t|
