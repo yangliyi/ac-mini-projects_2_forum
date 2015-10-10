@@ -7,18 +7,30 @@ class PostsController < ApplicationController
 
     @tags = Tag.order("taggings_count DESC").limit(5)
 
-    @q = Post.ransack(params[:q])
+    if params[:category_id]
+      @q = Post.includes(:categories).where(categories: { id: params[:category_id] }).ransack(params[:q])
+    elsif params[:tag_id]
+      @q = Post.includes(:tags).where(tags: { id: params[:tag_id] }).ransack(params[:q])
+    else
+      @q = Post.ransack(params[:q])
+    end
+
     @q.sorts = 'id DESC' if @q.sorts.empty?
     @posts = @q.result(distinct: true)
+
+    unless current_user && current_user.admin?
+      @posts = @posts.where(status: 'published')
+    end
     @posts = @posts.page(params[:page]).per(10)
+
     #if params[:category_id]
     #  @category = Category.find(params[:category_id])
     #  @posts = @category.posts
-    #else
+    # else
     #  @posts = Post.all
     #end
 
-    #if params[:tag_id]
+    # if params[:tag_id]
     #  @tag = Tag.find(params[:tag_id])
     #  @posts = @tag.posts
     #end

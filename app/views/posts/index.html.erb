@@ -84,13 +84,13 @@
             <% end %>
           </td>
           <td><%= post.comments.size %></td>
+          <td><%= post.created_at.strftime('%b %d %Y %H:%M') %></td>
           <td><% if post.comments.any? %>
             <%= post.comments.last.created_at.strftime('%b %d %Y %H:%M') %>
             <% else %>
             <%= '尚無留言' %>
             <% end %>
           </td>
-          <td><%= post.created_at.strftime('%b %d %Y %H:%M') %></td>
           <% if current_user && current_user.admin? %>
             <td>
               <%= post.status %>
